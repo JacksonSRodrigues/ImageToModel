@@ -5,17 +5,21 @@ export class HtmlRenderer {
     return `<html>
       <head></head>
       <body>
-      ${objects.map(object => this.html(object)).join('\n')}
+      ${objects.map(object => this.html(object)).join('')}
       </body>
     </html>`
   }
 
-  html = (object) => {
+  html = (object, parent) => {
     if(object.type !== 1) return '';
     const formfactor = object.formfactor;
-    const left = formfactor.left
+    let left = formfactor.left
     const right = formfactor.right
-    const top = formfactor.top;
+    let top = formfactor.top;
+    if(parent) {
+      top -= parent.formfactor.top;
+      left-= parent.formfactor.left;
+    }
     const width = formfactor.right - formfactor.left;
     const height = formfactor.bottom - formfactor.top;
     const color = formfactor.primaryColor;
@@ -23,10 +27,8 @@ export class HtmlRenderer {
     const g = color[1];
     const b = color[2];
     const a = color[3];
-    return `<div style="position:absolute; width:${width}; height:${height}; background-color:rgba(${r},${g},${b},${a}); left:${left}; top:${top}">
-      ${(object.siblings || []).map(element => this.html(element)).join('')}
-    </div>
-    `
+    return `<div style="position:absolute; width:${width}; height:${height}; background-color:rgba(${r},${g},${b},${a}); left:${left}; top:${top}">${(object.siblings || []).map(element => this.html(element,object)).filter(item => item!==undefined).join('\n')}
+    </div>`
   }
 
 }

@@ -30,10 +30,9 @@ export class HierarchyGenerator {
 
   nodeFromFormFactor = (element, siblings) => {
     return {
-      type: (element.percent() > 0.5 ? 1 : 0),
+      type: ((element.percent() > 0.4) ? 1 : 0),
       siblings: siblings,
       formfactor: element
     };
   }
-
 }
