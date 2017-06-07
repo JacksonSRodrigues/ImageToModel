@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { ColorSegregator, HierarchyGenerator } from './image-processor'
 import tImage from './test.png'
+import { HtmlRenderer } from './renderer/html'
 
 class App extends Component {
 
@@ -25,9 +26,17 @@ class App extends Component {
           tree.push(hGenertator.nodeFromFormFactor(element));
         }
       });
-    
+
       console.log('Tree Parsing Done');
       console.log('Tree',tree);
+
+      let renderer = new HtmlRenderer();
+      let html = renderer.render(tree);
+
+      console.log('HTML Done');
+      console.log(html);
+    
+      
 
     }).catch(err => {
       console.log('Error', err);

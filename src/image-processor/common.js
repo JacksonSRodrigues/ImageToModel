@@ -22,6 +22,7 @@ export class FormFactor {
         this.top = location.y;
         this.bottom = location.y;
         this.primaryColor = color;
+        this.pixels = 1;
     }
 
     percent = () => {
