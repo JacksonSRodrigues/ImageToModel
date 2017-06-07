@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { ColorSegregator } from './image-processor/color-segregator'
+import { ColorSegregator, HierarchyGenerator } from './image-processor'
 import tImage from './test.png'
 
 class App extends Component {
@@ -9,48 +9,25 @@ class App extends Component {
   componentDidMount() {
     let cSegregator = new ColorSegregator();
     cSegregator.segregate(tImage).then(components => {
-      /*
-      let treeGenerator = (parent, start, end, collection) => {
-        let tree = [];
-        let i = start;
-        while (i < end) {
-          let element = collection[i];
-          let siblings = [];
-          if (!parent) {
-            let data = treeGenerator(element, i + 1, end, collection);
-            siblings = data.siblings;
-            i = data.index;
-            i++;
+      console.log(components);
+      let hGenertator = new HierarchyGenerator();
+      let tree = [];
+      
+      components.forEach((element) => {
+        let didPush = false;
+        tree.forEach((node)=> {
+          if(hGenertator.pushToTree(node,element)) {
+            didPush = true;
           }
-          else {
-            if (parent.contains(element)) {
-              let data = treeGenerator(element, i + 1, end, collection);
-              siblings = data.siblings;
-              if (siblings.length > 0) {
-                i = data.index;
-              }
-              i++;
-            }
-          }
-
-          let node = {
-            type: (element.percent() > 0.5 ? 1 : 0),
-            siblings: (siblings.length > 0 ? siblings : undefined),
-            formfactor: element
-          }
-
-          tree.push(node);
+        });
+        
+        if (!didPush) {
+          tree.push(hGenertator.nodeFromFormFactor(element));
         }
-        return {
-          siblings: tree,
-          index: i
-        }
-      }
-
-      console.log('TREEs')
-      let treeGen = treeGenerator(undefined, 0, components.length, components);
-      console.log('TREE', treeGen);
-      */
+      });
+    
+      console.log('Tree Parsing Done');
+      console.log('Tree',tree);
 
     }).catch(err => {
       console.log('Error', err);
