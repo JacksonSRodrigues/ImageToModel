@@ -11,7 +11,7 @@ export class ColorSegregator {
         return 0;
     }
 
-    matchingLocations = (x, y, width, height) => {
+    adjacentPixelLocations(x, y, width, height) {
 
         let left = (x, y) => {
             if (x <= 0) return undefined;
@@ -83,10 +83,10 @@ export class ColorSegregator {
                                 let index = _x + (_y * width);
                                 return index;
                             };
-                            const locations = this.matchingLocations(dx, dy, width, height)
+                            const adjacentLocations = this.adjacentPixelLocations(dx, dy, width, height)
                             const cIndex = indexFromXY(dx, dy);
                             const cColor = colorMap[cIndex].color;
-                            const variation = locations.map(location => this.variation(cColor, colorMap[indexFromXY(location.x, location.y)].color))
+                            const variation = adjacentLocations.map(location => this.variation(cColor, colorMap[indexFromXY(location.x, location.y)].color))
 
 
                             let matchIndex;
@@ -101,7 +101,7 @@ export class ColorSegregator {
                                         variationIndex = k;
                                     }
                                 }
-                                matchIndex = locations[variationIndex]
+                                matchIndex = adjacentLocations[variationIndex]
                             }
 
                             if (matchIndex != undefined && variation[variationIndex] >= .9) {

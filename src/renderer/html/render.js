@@ -1,7 +1,7 @@
 import { FormFactor } from '../../image-processor/common'
 
 export class HtmlRenderer {
-  render = (objects) => {
+  render(objects) {
     return `<html>
       <head></head>
       <body>
@@ -10,7 +10,7 @@ export class HtmlRenderer {
     </html>`
   }
 
-  html = (object, parent) => {
+  html(object, parent) {
     if(object.type !== 1) return '';
     const formfactor = object.formfactor;
     let left = formfactor.left

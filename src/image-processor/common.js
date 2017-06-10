@@ -1,7 +1,4 @@
 export class Location {
-    x = 0;
-    y = 0;
-
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -9,12 +6,6 @@ export class Location {
 }
 
 export class FormFactor {
-    left = undefined;
-    right = undefined;
-    top = undefined;
-    bottom = undefined;
-    pixels = 0;
-    primaryColor = undefined;
 
     constructor(location, color) {
         this.left = location.x;
@@ -22,22 +13,30 @@ export class FormFactor {
         this.top = location.y;
         this.bottom = location.y;
         this.primaryColor = color;
-        this.pixels = 1;
+        this.locations = [];
+        this.colors = [];
+        this.locations.push(location);
+        this.colors.push(color);
     }
 
-    percent = () => {
+    percent() {
         return this.pixels / ((this.right - this.left) *(this.bottom - this.top));
     }
 
-    append = (location) => {
-        this.pixels++;
+    get pixels() {
+        return this.locations.length();
+    }
+
+    append(location, color) {
         if (location.x < this.left) (this.left = location.x);
         if (location.x > this.right) (this.right = location.x)
         if (location.y < this.top) (this.top = location.y);
         if (location.y > this.bottom) (this.bottom = location.y);
+        this.locations.push(location);
+        this.colors.push(color);
     }
 
-    contains = (formFactor) => {
+    contains(formFactor) {
         return (this.left <= formFactor.left 
         && this.top <= formFactor.top 
         && this.right >= formFactor.right

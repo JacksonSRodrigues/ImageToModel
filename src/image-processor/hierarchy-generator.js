@@ -2,7 +2,7 @@ import { FormFactor } from './common'
 
 export class HierarchyGenerator {
 
-  pushToTree = (tree, element) => {
+  pushToTree(tree, element) {
     if (tree && tree.formfactor.contains(element)) {
       let didIntersect = false
       let index = 0;
@@ -28,7 +28,7 @@ export class HierarchyGenerator {
     }
   }
 
-  nodeFromFormFactor = (element, siblings) => {
+  nodeFromFormFactor(element, siblings) {
     return {
       type: ((element.percent() > 0.4) ? 1 : 0),
       siblings: siblings,
