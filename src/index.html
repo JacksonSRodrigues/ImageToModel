@@ -2,10 +2,12 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Image To HTML</title>
   </head>
   <body>
-    <h1>Hello World!</h1>
+    <h1>Image to HTML</h1>
+    <p> Creates App from the provided Image.. Currently supporting solid colors.. 
+      And Doesnt Use Machine Learning for now...</p>
     <!-- All of the Node.js APIs are available in this renderer process. -->
     We are using Node.js <script>document.write(process.versions.node)</script>,
     Chromium <script>document.write(process.versions.chrome)</script>,
@@ -14,8 +16,7 @@
 
   <script>
     // You can also require other files to run in this process
-    let App = require('./App.js')
-    let app = new App();
-    app.componentDidMount();
+    let app = require('./App.js')
+    app.generateHTML();
   </script>
 </html>
