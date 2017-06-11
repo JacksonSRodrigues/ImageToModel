@@ -24,7 +24,7 @@ export class FormFactor {
     }
 
     get pixels() {
-        return this.locations.length();
+        return this.locations.length;
     }
 
     append(location, color) {
