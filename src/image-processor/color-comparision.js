@@ -15,7 +15,7 @@ export function isMatchingColor(color1, color2) {
     const hexColor1 = rgbaToHex(color1);
     const hexColor2 = rgbaToHex(color2);
     deltaE.delta(hexColor1, hexColor2, (delta) => {
-      resolve((delta <= 10)? 1 : 0)
+      resolve((delta <= 1)? 1 : 0)
     })
   });
 }
