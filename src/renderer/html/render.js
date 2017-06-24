@@ -1,6 +1,10 @@
 import { FormFactor } from '../../image-processor/common'
 
 export class HtmlRenderer {
+  constructor() {
+    this.nodes = 0;
+  }
+
   render(objects) {
     return `<html>
       <head></head>
@@ -12,6 +16,8 @@ export class HtmlRenderer {
 
   html(object, parent) {
     if(object.type !== 1) return '';
+
+    this.nodes++;
     const formfactor = object.formfactor;
     let left = formfactor.left
     const right = formfactor.right

@@ -14,7 +14,8 @@ For now copy index.html into lib folder...
 ![Soruce Image](/src/test.png)
 
 #### Output v2 HTML image 
-(25-Jun-17) 25k nodes from 88kpixels accepting deltaE Less than 1
+(25-Jun-17) segreagated 25k nodes from 88k pixels accepting deltaE Less than 1
+rendering 21k nodes
 ![Output Image](/src/output-2.png)
 
 #### Output HTML image
