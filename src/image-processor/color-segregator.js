@@ -1,52 +1,8 @@
 import pixels from 'get-pixels';
-import { FormFactor, Location } from './common'
+import { FormFactor, Location, adjacentPixelLocations } from './common'
 import { isMatchingColor, isGradientColor, isOvelappingColor } from './color-comparision'
 
 export class ColorSegregator {
-
-    adjacentPixelLocations(x, y, width, height) {
-
-        let left = (x, y) => {
-            if (x <= 0) return undefined;
-            return new Location(x - 1, y);
-        }
-
-        let topLeft = (x, y) => {
-            if (x <= 0 || y <= 0) return undefined;
-            return new Location(x - 1, y - 1);
-        }
-
-        let top = (x, y) => {
-            if (y <= 0) return undefined;
-            return new Location(x, y - 1);
-        }
-
-        let topRight = (x, y) => {
-            if (x >= width || y <= 0) return undefined;
-            return new Location(x + 1, y - 1);
-        }
-
-        let locations = []
-
-        let d = undefined;
-        d = left(x, y);
-        d && locations.push(d);
-
-        d = undefined;
-        d = topLeft(x, y);
-        d && locations.push(d);
-
-        d = undefined;
-        d = top(x, y);
-        d && locations.push(d);
-
-        d = undefined;
-        d = topRight(x, y);
-        d && locations.push(d);
-
-        return locations;
-    }
-
 
     segregate(tImage) {
         return new Promise((resolve, reject) => {
@@ -69,6 +25,7 @@ export class ColorSegregator {
                     console.log(width, height, width*height);
                     for (let y = 0; y < height; y++) {
                         for (let x = 0; x < width; x++) {
+                            const displayLog = (x === 127);
                             const dx = x;
                             const dy = y;
                             const indexFromXY = (_x, _y) => {
@@ -76,21 +33,13 @@ export class ColorSegregator {
                                 return index;
                             };
 
-                            const adjacentLocations = this.adjacentPixelLocations(dx, dy, width, height)
+                            const adjacentLocations = adjacentPixelLocations(dx, dy, width, height)
                             const cIndex = indexFromXY(dx, dy);
                             const cColor = colorMap[cIndex].color;
 
                             if(cIndex % 1000 === 0) {
                                 console.log(cIndex);
                             }
-
-                            // const variation = adjacentLocations.map(async (location) => {
-                            //     let adjColor = colorMap[indexFromXY(location.x, location.y)].color;
-                            //     let match = await isMatchingColor(cColor, adjColor);
-                            //     let gradMatch = isGradientColor(cColor, adjColor);
-                            //     let result = (match > gradMatch) ? match : gradMatch;
-                            //     return result;
-                            // });
 
                             let variation = [];
                             let adjIndex = 0
