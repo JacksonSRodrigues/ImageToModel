@@ -9,7 +9,6 @@ export function saveContent(content) {
         reject();
       }
       else {
-        deleteFile(filePath);
         fs.writeFile(filePath, content, (err) => {
           if (err) {
             reject(err);
