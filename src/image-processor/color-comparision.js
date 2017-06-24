@@ -2,12 +2,12 @@
 const tinyColor = require('tinycolor2');
 const deltaE = require('deltae')
 
-function rgbaToHex(colorComps) {
- const r = parseInt(colorComps[0], 10);
- const g = parseInt(colorComps[1], 10);
- const b = parseInt(colorComps[2], 10);
- const a = parseInt(colorComps[3], 10);
- return ('#' + r.toString(16) + g.toString(16) + b.toString(16));
+export function rgbaToHex(colorComps) {
+ const r = colorComps[0];
+ const g = colorComps[1];
+ const b = colorComps[2];
+ const a = colorComps[3];
+  return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
 export function isMatchingColor(color1, color2) {
