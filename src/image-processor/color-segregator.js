@@ -1,15 +1,8 @@
 import pixels from 'get-pixels';
 import { FormFactor, Location } from './common'
+import { isMatchingColor, isGradientColor, isOvelappingColor } from './color-comparision'
 
 export class ColorSegregator {
-
-    variation(color1, color2) {
-        if (color1[0] === color2[0]
-            && color1[1] === color2[1]
-            && color1[2] === color2[2]
-            && color1[3] === color2[3]) return 1;
-        return 0;
-    }
 
     adjacentPixelLocations(x, y, width, height) {
 
@@ -57,8 +50,7 @@ export class ColorSegregator {
 
     segregate(tImage) {
         return new Promise((resolve, reject) => {
-
-            pixels(tImage, (err, pixels) => {
+            pixels(tImage, async (err, pixels) => {
 
                 if (!err && pixels) {
                     const width = pixels.shape[0];
@@ -74,7 +66,7 @@ export class ColorSegregator {
                     }
 
                     let components = []
-                    console.log(width, height);
+                    console.log(width, height, width*height);
                     for (let y = 0; y < height; y++) {
                         for (let x = 0; x < width; x++) {
                             const dx = x;
@@ -83,11 +75,36 @@ export class ColorSegregator {
                                 let index = _x + (_y * width);
                                 return index;
                             };
+
                             const adjacentLocations = this.adjacentPixelLocations(dx, dy, width, height)
                             const cIndex = indexFromXY(dx, dy);
                             const cColor = colorMap[cIndex].color;
-                            const variation = adjacentLocations.map(location => this.variation(cColor, colorMap[indexFromXY(location.x, location.y)].color))
 
+                            if(cIndex % 1000 === 0) {
+                                console.log(cIndex);
+                            }
+
+                            // const variation = adjacentLocations.map(async (location) => {
+                            //     let adjColor = colorMap[indexFromXY(location.x, location.y)].color;
+                            //     let match = await isMatchingColor(cColor, adjColor);
+                            //     let gradMatch = isGradientColor(cColor, adjColor);
+                            //     let result = (match > gradMatch) ? match : gradMatch;
+                            //     return result;
+                            // });
+
+                            let variation = [];
+                            let adjIndex = 0
+                            while (adjIndex < adjacentLocations.length) {
+                                const location = adjacentLocations[adjIndex];
+                                const adjColor = colorMap[indexFromXY(location.x, location.y)].color;
+                                const match = await isMatchingColor(cColor, adjColor);
+                                variation.push(match);
+                                if(match == 1) { // if max match is found then exit
+                                    break;
+                                }
+
+                                adjIndex ++;
+                            }
 
                             let matchIndex;
                             let variationIndex = undefined;
@@ -108,7 +125,7 @@ export class ColorSegregator {
                                 let i = matchIndex;
                                 let dIndex = indexFromXY(matchIndex.x, matchIndex.y);
                                 let formFactor = colorMap[dIndex].key;
-                                formFactor.append(new Location(dx, dy));
+                                formFactor.append(new Location(dx, dy), cColor);
                                 colorMap[cIndex].key = formFactor;
                             }
                             else {

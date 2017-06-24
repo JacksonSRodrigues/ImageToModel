@@ -4,7 +4,10 @@
   "private": true,
   "main": "lib/main.js",
   "dependencies": {
-    "get-pixels": "^3.3.0"
+    "deltae": "0.0.4",
+    "electron-remote": "^1.1.2",
+    "get-pixels": "^3.3.0",
+    "tinycolor2": "^1.4.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

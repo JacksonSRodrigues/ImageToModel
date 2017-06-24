@@ -8,7 +8,7 @@ export function generateHTML() {
     readFilePath().then(tImage => {
       let cSegregator = new ColorSegregator();
       cSegregator.segregate(tImage).then(components => {
-        console.log(components);
+        console.log(components.length);
         let hGenertator = new HierarchyGenerator();
         let tree = [];
 
@@ -31,10 +31,8 @@ export function generateHTML() {
         let renderer = new HtmlRenderer();
         let html = renderer.render(tree);
 
-        console.log('HTML Done');
-        console.log(html);
         saveContent(html);
-
+        console.log('HTML Rendering Done');
       }).catch(err => {
         console.log('Error', err);
       })

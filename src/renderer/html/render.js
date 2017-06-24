@@ -20,8 +20,8 @@ export class HtmlRenderer {
       top -= parent.formfactor.top;
       left-= parent.formfactor.left;
     }
-    const width = formfactor.right - formfactor.left;
-    const height = formfactor.bottom - formfactor.top;
+    const width = (formfactor.right - formfactor.left) + 1;
+    const height = (formfactor.bottom - formfactor.top) + 1;
     const color = formfactor.primaryColor;
     const r = color[0];
     const g = color[1];
