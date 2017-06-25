@@ -1,3 +1,5 @@
+export const JustNoticableDiff = 2.3;
+
 export class Location {
     constructor(x, y) {
         this.x = x;

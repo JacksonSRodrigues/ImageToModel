@@ -1,4 +1,3 @@
-//export namespace ColorCompare {
 const tinyColor = require('tinycolor2');
 const deltaE = require('deltae')
 
@@ -10,12 +9,12 @@ export function rgbaToHex(colorComps) {
   return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
-export function isMatchingColor(color1, color2) {
+export function isMatchingColor(color1, color2, diff=1) {
   return new Promise((resolve, reject) => {
     const hexColor1 = rgbaToHex(color1);
     const hexColor2 = rgbaToHex(color2);
     deltaE.delta(hexColor1, hexColor2, (delta) => {
-      resolve((delta <= 1)? 1 : 0)
+      resolve((delta <= diff)? 1 : 0)
     })
   });
 }

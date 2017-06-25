@@ -1,6 +1,7 @@
 import pixels from 'get-pixels';
 import { FormFactor, Location, adjacentPixelLocations } from './common'
 import { isMatchingColor, isGradientColor, isOvelappingColor } from './color-comparision'
+import { JustNoticableDiff } from './common'
 
 export class ColorSegregator {
 
@@ -23,6 +24,7 @@ export class ColorSegregator {
 
                     let components = []
                     console.log(width, height, width*height);
+                    let totalPixels = width* height;
                     for (let y = 0; y < height; y++) {
                         for (let x = 0; x < width; x++) {
                             const displayLog = (x === 127);
@@ -38,7 +40,7 @@ export class ColorSegregator {
                             const cColor = colorMap[cIndex].color;
 
                             if(cIndex % 1000 === 0) {
-                                console.log(cIndex);
+                                console.log( (cIndex/totalPixels)*100+'%');
                             }
 
                             let variation = [];
@@ -46,7 +48,7 @@ export class ColorSegregator {
                             while (adjIndex < adjacentLocations.length) {
                                 const location = adjacentLocations[adjIndex];
                                 const adjColor = colorMap[indexFromXY(location.x, location.y)].color;
-                                const match = await isMatchingColor(cColor, adjColor);
+                                const match = await isMatchingColor(cColor, adjColor, JustNoticableDiff);
                                 variation.push(match);
                                 if(match == 1) { // if max match is found then exit
                                     break;
